@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, 
-  Link, Grid, Box, Typography, makeStyles, Container} from '@material-ui/core';
+  Link, Grid, Typography, makeStyles, Container} from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { Redirect } from 'react-router';
+// import Container from '@material-ui/core/Container'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,25 +34,26 @@ export default function Login(props) {
     useEffect(() => {
       const requestOptions = {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
           body: JSON.stringify(final)
       };
       async function fetchMyAPI() {
         await fetch('/login', requestOptions)
           .then(response => response.json())
           .then(data => {
-            console.log(data.succeded)
             if(data.succeded){
               setRedirect(redirect=> !redirect);
+              console.log(data.events)
               props.changeLogging();
-              // console.log(props)
+              props.handleUser(final.email)
+              props.handleEvents(data.events)
             }
             else
               alert('פרטי ההתחברות לא נכונים')
           })
       }
         fetchMyAPI()
-    }, [final]);
+    }, [final, props]);
 
     function handleChange(e){
       const {value, name} = e.target;
@@ -147,8 +149,6 @@ export default function Login(props) {
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
-      </Box>
     </Container>
   );
 }

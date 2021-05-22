@@ -4,8 +4,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-// import IconButton from '@material-ui/core/IconButton';
-// import MenuIcon from '@material-ui/icons/Menu';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,8 +27,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function ToolBar(){
+function ToolBar(props){
     const classes = useStyles();
+
     return (
         <AppBar position="static">
             <Toolbar>
@@ -40,8 +39,17 @@ function ToolBar(){
                 <Typography variant="h6" className={classes.title}>
                     Online Calendar
                 </Typography>
-                <Button href="/login" color="inherit" className={classes.button1}>Login</Button>
-                <Button href="/signup" className={classes.button2}>SignUp</Button>
+                {!props.isLogged &&
+                  <div>
+                    <Button href="/login" color="inherit" className={classes.button1}>Login</Button>
+                    <Button href="/signup" className={classes.button2}>SignUp</Button>
+                  </div>
+                }
+                {props.isLogged &&
+                  <div>
+                    <Button color="inherit" className={classes.button2} onClick={props.logout}>Logout</Button>
+                  </div>
+                }
             </Toolbar>
         </AppBar>
     );

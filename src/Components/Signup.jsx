@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Avatar, Button, CssBaseline, TextField, Link, Grid, Box, Typography, Container, makeStyles}  from '@material-ui/core';
+import {Avatar, Button, CssBaseline, TextField, Link, Grid, Typography, Container, makeStyles}  from '@material-ui/core';
 import { Redirect } from 'react-router';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function SignUp(props) {
   const classes = useStyles();
   const [details, setDetails] = useState({firstName:'', lastName:'', email:'', password:''});
   const [final, setFinal] = useState({firstName:'', lastName:'', email:'', password:''});
@@ -43,6 +43,8 @@ export default function SignUp() {
           if(data.succeded){
             alert('registration succeeded')
             setRedirect(redirect=> !redirect);
+            props.changeLogging();
+            props.handleUser(final.email)
           }
           else{
             alert('email address already registrated in the system')
@@ -52,7 +54,7 @@ export default function SignUp() {
   
       fetchMyAPI()
     
-    }, [final]);
+    }, [final, props]);
   
   function handleChange(e){
     const {value, name} = e.target;
@@ -182,8 +184,6 @@ export default function SignUp() {
           </Grid>
         </form>
       </div>
-      <Box mt={5}>
-      </Box>
     </Container>
   );
 }
